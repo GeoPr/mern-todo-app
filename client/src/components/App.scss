@@ -1,0 +1,16 @@
+.page {
+  // .page__sc
+  &__sc {
+  }
+}
+.sc {
+  // .sc__container
+  &__container {
+  }
+  // .sc__body
+  &__body {
+    padding: 100px 0px;
+    min-height: 100vh;
+    display: grid;
+  }
+}

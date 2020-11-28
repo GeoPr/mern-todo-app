@@ -1,0 +1,22 @@
+.auth {
+	justify-self: center;
+	align-self: center;
+	// .auth__body
+	&__body {
+	}
+	// .auth__form
+	&__form {
+		padding: 20px;
+		border-radius: 10px;
+		background: #eee;
+		display: grid;
+		row-gap: 20px;
+		width: 500px;
+	}
+	// .auth__buttons
+	&__buttons {
+		display: grid;
+		grid-template: auto / repeat(2, 1fr);
+		column-gap: 30px;
+	}
+}
