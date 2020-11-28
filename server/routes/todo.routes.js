@@ -1,7 +1,6 @@
 const { Router } = require('express')
 const Todo = require('../models/Todo')
 const authMiddleware = require('../middleware/auth.middleware')
-const { collection } = require('../models/Todo')
 const router = Router()
 
 router.post('/create', authMiddleware, async (request, response) => {
@@ -35,7 +34,9 @@ router.post('/remove', authMiddleware, async (request, response) => {
   try {
     const { id } = request.body
 
-    collection.deleteOne({ id: id })
+    await Todo.findOneAndDelete({ id })
+
+    response.status(200).send()
   } catch (e) {
     response.status(400).json({
       message: 'Something went wrong, try again',
@@ -43,16 +44,18 @@ router.post('/remove', authMiddleware, async (request, response) => {
   }
 })
 
-router.post('/change', authMiddleware, async (req, res) => {
+router.post('/change', authMiddleware, async (request, response) => {
 	try {
-		const { id, isCompleted } = req.body
+    const { id, isCompleted } = request.body
 
-		collection.updateOne(
-			{ id: id },
-			{ $set: { completed: !isCompleted } }
-		)
+    await Todo.findOneAndUpdate(
+      { id },
+      { $set: { completed: !isCompleted } }
+    )
+
+    response.status(200).send()
 	} catch (e) {
-		res.status(400).json({
+		response.status(400).json({
       message: 'Something went wrong, try again',
     })
 	}
@@ -61,6 +64,7 @@ router.post('/change', authMiddleware, async (req, res) => {
 router.get('/', authMiddleware, async (request, response) => {
   try {
     const todos = await Todo.find({ owner: request.user.userId })
+
     response.json(todos)
   } catch (e) {
     response.status(500).json({
